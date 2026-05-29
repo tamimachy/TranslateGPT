@@ -30,12 +30,11 @@
 
             @if (ViewBag.Result != null)
             {
-                <div class="alert alert-info mt-4">
-                    <strong> Translation Result: </strong>
-                    <p>@ViewBag.Result</p>
+                <div class="mt-4">
+                    <p> Translation Result: </p>
+                    <div class="alert alert-info">@Html.Raw(ViewBag.Result)</div>
                 </div>
             }
-            )
         </div>
     </div>
 

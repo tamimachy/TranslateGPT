@@ -32,12 +32,12 @@ namespace TranslateGPT.Controllers
         {
             var openAIKey = _configuration["OpenAI:ApiKey"];
 
-            _httpClient.DefaultRequestHeaders.Add("Authorization",$"Bearer {openAIKey}");
+            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", openAIKey);
 
             //Define the request payload
             var payload = new
             {
-                model = "gpt-4",
+                model = "gpt-4o-mini",
                 messages = new object[]
                 {
                     new { role = "system", content = $"Translate to {selectedLanguage}" },
@@ -55,8 +55,8 @@ namespace TranslateGPT.Controllers
             
             // Return a response to the client
             var response = JsonConvert.DeserializeObject<OpenAIResponse>(responseMessageJson);
-
-            ViewBag.Result = response.Choices[0].Message.Content;
+            ViewBag.Result = responseMessageJson;
+            // ViewBag.Result = response.Choices[0].Message.Content;
             ViewBag.Languages = mostUsedLanguages;
 
             return View("Index");
