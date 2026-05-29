@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json.Serialization;
+using TranslateGPT.DTOs;
 using TranslateGPT.Models;
 
 namespace TranslateGPT.Controllers
@@ -15,10 +16,11 @@ namespace TranslateGPT.Controllers
         private readonly List<string> mostUsedLanguages = new List<string> {
             "English", "Spanish", "French", "German", "Chinese", "Japanese", "Russian", "Portuguese", "Arabic", "Hindi", "Tamil","Turkish", "Urdu", "Italian","Korean", "Bangla"
         };
-        public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
+        public HomeController(ILogger<HomeController> logger, IConfiguration configuration, HttpClient httpClient)
         {
             _logger = logger;
             _configuration = configuration;
+            _httpClient = httpClient;
         }
         public IActionResult Index()
         {
@@ -46,11 +48,18 @@ namespace TranslateGPT.Controllers
             };
             string jsonPayload = JsonConvert.SerializeObject(payload);
             HttpContent httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+            
             //Send request to OpenAI API
             var responseMessage = await _httpClient.PostAsync("https://api.openai.com/v1/chat/completions", httpContent);
             var responseMessageJson = await responseMessage.Content.ReadAsStringAsync();
+            
             // Return a response to the client
-            return Ok();
+            var response = JsonConvert.DeserializeObject<OpenAIResponse>(responseMessageJson);
+
+            ViewBag.Result = response.Choices[0].Message.Content;
+            ViewBag.Languages = mostUsedLanguages;
+
+            return View("Index");
         }
         public IActionResult Privacy()
         {

@@ -27,6 +27,15 @@
                     </svg> Translate
                 </button>
             </form>
+
+            @if (ViewBag.Result != null)
+            {
+                <div class="alert alert-info mt-4">
+                    <strong> Translation Result: </strong>
+                    <p>@ViewBag.Result</p>
+                </div>
+            }
+            )
         </div>
     </div>
 
