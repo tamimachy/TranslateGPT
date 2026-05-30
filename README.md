@@ -73,8 +73,8 @@ The project was initially developed using the OpenAI Chat Completion API.
 
     {
       "error": {
-      "message": "You exceeded your current quota, please check your plan and billing details.",
-      "code": "insufficient_quota"
+        "message": "You exceeded your current quota, please check your plan and billing details.",
+        "code": "insufficient_quota"
       }
     }
 
